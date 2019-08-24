@@ -111,9 +111,17 @@ class DrawView : View {
    */
   fun setDrawPoint(
     point: Array<FloatArray>,
-    ratio: Float
+    ratio: Float,
+    count: Int
   ) {
     mDrawPoint.clear()
+    if(count == 1) {
+      mPaint.color = 0xba160c.toInt()
+    } else if(count == 2){
+      mPaint.color = 0x5b39c6.toInt()
+    } else {
+      mPaint.color = 0x00ff00.toInt()
+    }
 
     var tempX: Float
     var tempY: Float
@@ -152,7 +160,6 @@ class DrawView : View {
     super.onDraw(canvas)
     if (mDrawPoint.isEmpty()) return
     var prePointF: PointF? = null
-    mPaint.color = 0xff6fa8dc.toInt()
     val p1 = mDrawPoint[1]
     for ((index, pointF) in mDrawPoint.withIndex()) {
       if (index == 1) continue
@@ -167,7 +174,6 @@ class DrawView : View {
         }
         else -> {
           if (prePointF != null) {
-            mPaint.color = 0xff6fa8dc.toInt()
             canvas.drawLine(prePointF.x, prePointF.y, pointF.x, pointF.y, mPaint)
           }
         }

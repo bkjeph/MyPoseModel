@@ -362,8 +362,8 @@ class Camera2BasicFragment : Fragment(), View.OnClickListener,
     }
 
 
-    private fun drawAndGetBitMap(bitmap: Bitmap, pointsArray: Array<FloatArray>, textToShow: String): Bitmap {
-        drawView!!.setDrawPoint(pointsArray, 0.5f)
+    private fun drawAndGetBitMap(bitmap: Bitmap, pointsArray: Array<FloatArray>, textToShow: String, color: Int): Bitmap {
+        drawView!!.setDrawPoint(pointsArray, 0.5f, color)
         showToast(textToShow)
         val drawViewBitMap = drawView!!.getBitMap()
         drawView!!.setDrawingCacheEnabled(false)
@@ -460,13 +460,13 @@ class Camera2BasicFragment : Fragment(), View.OnClickListener,
                 drawView!!.setDrawingCacheEnabled(true)
                 val textToShow = classifier!!.classifyFrame(dstBmp)
                 if (prvBitMap != null) {
-                    val drawViewBitMap1 = drawAndGetBitMap(dstBmp, classifier!!.mPrintPointArray!!, textToShow)
+                    val drawViewBitMap1 = drawAndGetBitMap(dstBmp, classifier!!.mPrintPointArray!!, textToShow, 1)
                     val scaledDrawView1 = Bitmap.createScaledBitmap(drawViewBitMap1, width, height, true)
                     val overlayedBitMap1 = overlayViews(rotatedBitmap, scaledDrawView1)
                     drawView!!.setDrawingCacheEnabled(true)
                     val jsonObj = getJsonObjectForTransformingWithParams(classifier!!.mPrintPointArray!!)
                     val transformedArray = getTransformedMetric(jsonObj)
-                    val drawViewBitMap2 = drawAndGetBitMap(dstBmp, transformedArray, textToShow)
+                    val drawViewBitMap2 = drawAndGetBitMap(dstBmp, transformedArray, textToShow, 2)
                     val scaledDrawView2 = Bitmap.createScaledBitmap(drawViewBitMap2, width, height, true)
                     val overlayedBitMap2 = overlayViews(overlayedBitMap1, scaledDrawView2)
                     val overlayedBitMap3 = overlayViews(overlayedBitMap2, prvBitMap!!)
@@ -475,7 +475,7 @@ class Camera2BasicFragment : Fragment(), View.OnClickListener,
 //                writeTheBitMap(secondOverlayedBitMap)
                 } else {
                     val jsonObj = getJsonObjectWithParams(classifier!!.mPrintPointArray!!)
-                    val drawViewBitMap = drawAndGetBitMap(dstBmp, classifier!!.mPrintPointArray!!, textToShow)
+                    val drawViewBitMap = drawAndGetBitMap(dstBmp, classifier!!.mPrintPointArray!!, textToShow, 0)
                     val scaledDrawView = Bitmap.createScaledBitmap(drawViewBitMap, width, height, true)
                     val overlayedBitMap = overlayViews(rotatedBitmap, scaledDrawView)
                     prvBitMap = Bitmap.createBitmap(scaledDrawView)
@@ -776,7 +776,7 @@ class Camera2BasicFragment : Fragment(), View.OnClickListener,
         bitmap.recycle()
 
 
-        drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
+        drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f, 0)
 
         showToast(textToShow)
     }
